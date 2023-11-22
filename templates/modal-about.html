@@ -1,0 +1,30 @@
+{{ define "modal-about" }}
+
+<!--
+  Modal dialog for the about page
+-->
+
+<div class="modal is-active" id="modal">
+  <div class="modal-background" hx-get="#" hx-swap="delete" hx-target="#modal"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">About</p>
+    </header>
+    <section class="modal-card-body">
+      <h3 class="title is-5">HTMX & Go - Chat App</h3>
+      A basic chat app built using Go & HTMX using Server Sent Events (SSE) for real-time updates. With Bulma for CSS and no JavaScript at
+      all!
+      <br /><br />
+      Version: <b>{{ .version }}</b>
+      <hr />
+      <a href="https://github.com/benc-uk/htmx-go-chat" target="_blank" class="button is-info">
+        <i class="fa-brands fa-github"></i>&nbsp;GitHub Project
+      </a>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" hx-get="#" hx-swap="delete" hx-target="#modal">OK</button>
+    </footer>
+  </div>
+</div>
+
+{{ end }}
