@@ -1,0 +1,46 @@
+{{ define "chat" }}
+
+<!--
+  This is the main chat section. It is only shown to logged in users
+  It listens to SSE events from the server and updates the chat area
+-->
+
+<div class="section p-3 fh">
+  {{ if .addLoginButton }}
+  <div hx-swap-oob="beforeend:#nav">{{ template "logged-in" . }}</div>
+  {{ end }}
+
+  <!-- Connection to SSE event stream is here -->
+  <div hx-ext="sse" sse-connect="/chat-stream" id="chatarea">
+    <div class="topbox">
+      <p class="is-flex-grow-1"><i class="fa-solid fa-user-large"></i> '{{ .username }}'</p>
+
+      <!-- SSE messages with type 'system' are picked up here -->
+      <span sse-swap="system">Connecting...</span>
+    </div>
+
+    <form
+      hx-post="/chat"
+      hx-swap="none"
+      onkeydown="if(event.keyCode == 13 && !event.shiftKey) { event.preventDefault(); return false }"
+      hx-on::after-request="this.reset()"
+      hx-trigger="click from:#send,keyup[!shiftKey && keyCode==13]"
+    >
+      <input type="hidden" name="username" value="{{ .username }}" />
+
+      <div class="is-flex is-align-items-center">
+        <div class="field is-flex-grow-1 mr-4">
+          <textarea class="textarea is-info has-fixed-size" rows="2" name="message" placeholder="Say something" required></textarea>
+        </div>
+        <div class="field">
+          <button class="button is-success is-medium mb-3" id="send"><i class="fa-solid fa-paper-plane"></i>&nbsp;SEND</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- SSE messages with type 'chat' are picked up here -->
+    <div id="chat" sse-swap="chat" hx-swap="beforeend" hx-on::after-settle="this.scrollTo(0, this.scrollHeight);"></div>
+  </div>
+</div>
+
+{{ end }}
