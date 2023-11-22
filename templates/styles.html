@@ -1,0 +1,38 @@
+{{ define "index" }}
+
+<!--
+  Main index page
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App - HTMX, Go & SSE</title>
+    <script src="https://unpkg.com/htmx.org@1.9.7/dist/htmx.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+    <link rel="icon" type="image/png" href="https://em-content.zobj.net/source/skype/289/speech-balloon_1f4ac.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    {{ template "styles" . }}
+  </head>
+  <body>
+    <div class="has-background-info-dark p-2 has-text-white-bis">
+      <div class="is-flex is-align-items-center" id="nav">
+        <div class="is-flex-grow-1 is-size-3 pl-2"><i class="fa-regular fa-comment-dots"></i>&nbsp; Chat App</div>
+
+        <div class="button is-success mx-2 is-hidden-mobile" hx-get="/modal-about" hx-target="#main" hx-swap="beforeend">
+          <i class="fa-solid fa-circle-info fa-fw"></i>&nbsp;ABOUT
+        </div>
+
+        {{ if .username }} {{ template "logged-in" . }} {{ end }}
+      </div>
+    </div>
+
+    <div id="main" class="fh">{{ if .username }} {{ template "chat" . }} {{ else }} {{ template "login" . }} {{ end }}</div>
+  </body>
+</html>
+
+{{ end }}
